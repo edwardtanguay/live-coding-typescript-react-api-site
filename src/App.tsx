@@ -1,30 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import './App.css';
-import { IPerson, Status, PersonStatus } from './data/interfaces';
+// import { IPerson, Status, PersonStatus } from './data/interfaces';
 
-const person: IPerson = {
-	firstName: 'Georg',
-	lastName: 'Angers',
-	age: 34,
-	isMember: true,
-	scores: [38, 23, 52],
-	accessGroups: ['admins', 'backupAdmins'],
-	status: 'customer'
-};
+const url = 'https://gutendex.com/books/?search=paris';
 
 function App() {
-	const [count, setCount] = useState(0);
+	const [books, setBooks] = useState([]);
+
+	useEffect(() => {
+		(async () => {
+			setBooks((await axios.get(url)).data.results);
+		})();
+	}, []);
 
 	return (
 		<div className="App">
-			<p>
-				{person.status === 'customer' && (
-					<>
-				The employee {person.firstName} {person.lastName} is {person.age}{' '}
-						years old. Their scores are: {person.scores.join(', ')} and his status is: {person.status}
-					</>
-				)}
-			</p>
+			<p>There are {books.length} books.</p>
+			<ul>
+				{books.map((book, index) => {
+					return (
+						<li key={index}>{book.title} by {book.authors.length === 0 ? '(unknown)' : book.authors[0].name}</li>
+				)
+			})}
+			</ul>
 		</div>
 	);
 }
