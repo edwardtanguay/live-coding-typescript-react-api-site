@@ -1,3 +1,5 @@
+export type Status = 'customer' | 'employee' | 'unknown';
+
 export interface IPerson {
 	firstName: string;
 	lastName: string;
@@ -5,7 +7,7 @@ export interface IPerson {
 	isMember: boolean;
 	scores: number[];
 	accessGroups: string[];
-	status: PersonStatus;
+	status: Status; 
 }
 
 export enum PersonStatus {
